@@ -5,6 +5,7 @@
     <title>test</title>
 </head>
 <body>
-    I'm test page!!!!
+<h2>测试相关页面</h2>
+    ${result}
 </body>
 </html>

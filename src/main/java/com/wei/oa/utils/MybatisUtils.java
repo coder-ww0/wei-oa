@@ -30,7 +30,31 @@ public class MybatisUtils {
     }
 
     public static Object executeQuery(Function<SqlSession, Object> func) {
-        String name = "abc";
-        return name;
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        try {
+            Object obj = func.apply(sqlSession);
+            return obj;
+        } finally {
+            sqlSession.close();
+        }
+    }
+
+    /**
+     * 执行insert/update/delete写操作sql
+     * @param func
+     * @return
+     */
+    public static Object executeUpdate(Function<SqlSession, Object> func) {
+        SqlSession sqlSession = sqlSessionFactory.openSession(false);
+        try {
+            Object obj = func.apply(sqlSession);
+            sqlSession.commit();
+            return obj;
+        } catch (RuntimeException e) {
+            sqlSession.rollback();
+            throw e;
+        } finally {
+            sqlSession.close();
+        }
     }
 }
