@@ -30,6 +30,7 @@ public class MybatisUtils {
     }
 
     public static Object executeQuery(Function<SqlSession, Object> func) {
-
+        String name = "abc";
+        return name;
     }
 }
