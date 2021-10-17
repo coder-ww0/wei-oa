@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>办公OA系统</title>
+    <link rel="stylesheet" href="/resources/layui/css/layui.css"/>
+    <style>
+        body {
+            background-color: #6a6767;
+        }
+
+        .oa-container {
+            background-color: white;
+            position: absolute;
+            width: 400px;
+            height: 350px;
+            top: 50%;
+            left: 50%;
+            padding: 20px;
+            margin-left: -200px;
+            margin-top: -175px;
+        }
+
+        #username, #password {
+            text-align: center;
+            font-size: 24px;
+        }
+    </style>
+</head>
+<body>
+<div class="oa-container">
+    <h1 style="text-align: center;margin-bottom: 20px">办公OA系统</h1>
+    <form class="layui-form" action="">
+        <div class="layui-form-item">
+            <input type="text" id="username" name="username" lay-verify="required" placeholder="请输入用户名"
+                   autocomplete="off" class="layui-input">
+        </div>
+        <div class="layui-form-item">
+            <input type="password" id="password" name="password" lay-verify="required" placeholder="请输入密码"
+                   autocomplete="off" class="layui-input">
+        </div>
+        <div class="layui-form-item">
+            <button class="layui-btn layui-btn-fluid" lay-submit lay-filter="login">登录</button>
+        </div>
+    </form>
+</div>
+<script src="resources/layui/layui.all.js"></script>
+<script>
+    layui.form.on("submit(login)", function (formdata) {
+        console.log(formdata);
+        layui.$.ajax({
+            url: "/check_login",
+            data: formdata.field,
+            type: "post",
+            dataType: "json",
+            success: function (json) {
+                console.log(json);
+                if (json.code === "0") {
+                    // layui.layer.msg("登录成功");
+                    console.log(json.redirect_url);
+                    window.location.href=json.redirect_url;
+                } else  {
+                    layui.layer.msg(json.message);
+                }
+            }
+        })
+        // submit提交时间返回true则表单提交，false则阻止表单提交
+        return false;
+    })
+</script>
+</body>
+</html>
